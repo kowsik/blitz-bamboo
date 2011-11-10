@@ -1,4 +1,4 @@
-tz.io](http://blitz.io/images/logo2.png)
+### ![blitz.io](http://blitz.io/images/logo2.png)
 
 ### Make load and performance a fun sport.
 
