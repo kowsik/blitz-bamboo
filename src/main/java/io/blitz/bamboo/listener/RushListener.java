@@ -91,6 +91,7 @@ public class RushListener extends CurlListener implements IRushListener{
         String percentStr = config.get(CurlTaskConfigurator.PERCENTAGE);
         double percentage = Double.parseDouble(percentStr);
         
+        //gets the last point
         List<Point> timeline = (List<Point>)result.getTimeline();
         int errors = timeline.get(timeline.size()-1).getErrors();
         int timeouts = timeline.get(timeline.size()-1).getTimeouts();
