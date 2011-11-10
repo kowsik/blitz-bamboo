@@ -1,0 +1,4 @@
+#lines starting with '#' are considered comments.
+nb-configuration.xml
+/target/
+/activemq-data/

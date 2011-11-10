@@ -1,0 +1,55 @@
+<atlassian-plugin key="${project.groupId}.bamboo-plugin" name="Blitz" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <!-- internationalize your plugin -->
+    <resource type="i18n" name="io.blitz language" location="english"/>
+
+    <!-- defines the curl task -->
+    <taskType name="Blitz Curl" class="io.blitz.bamboo.CurlTask" key="curl">
+        <description>Run sprints and rush tests using blitz.io</description>
+      <!-- Categories available in 3.1: "builder", "test" and "deployment"-->
+        <category name="test"/>
+        <configuration class="io.blitz.bamboo.CurlTaskConfigurator"/>
+        <resource type="freemarker" name="edit" location="io/blitz/curl/view/editTask.ftl"/>
+        <resource type="freemarker" name="view" location="io/blitz/curl/view/viewTask.ftl"/>
+        <resource type="download" name="icon" location="io/blitz/curl/images/icon.png"/>
+    </taskType>
+    
+    <web-resource key="rush-dependencies" name="Rush Results Chart Scripts">
+        <resource type="download" name="jquery.flot.js" location="libs/jquery.flot.js"/>
+        <resource type="download" name="jquery.flot.crosshair.js" location="libs/jquery.flot.crosshair.js"/>
+        <resource type="download" name="underscore-1.1.4.js" location="libs/underscore-1.1.4.js"/>
+        <resource type="download" name="play.js" location="io/blitz/curl/scripts/play.js"/>
+        <resource type="download" name="bamboo.css" location="io/blitz/curl/styles/bamboo.css"/>
+    </web-resource>
+    
+    <!-- defines the curl result page -->
+    <xwork key="viewCurlResult" name="Curl Results Tab">
+        <description>Displays the test results as a tab on the job results page</description>
+        <package name="blitzPluginBuildResultView" extends="buildResultView">
+            <action name="viewCurlResult" class="io.blitz.bamboo.ViewCurlBuildResults">
+                <result name="success" type="freemarker">/io/blitz/curl/view/viewResult.ftl</result>
+                <result name="error" type="freemarker">/error.ftl</result>
+            </action>
+        </package>
+    </xwork>
+    
+    <!-- defines downloadble resources -->
+    <resource type="download" name="images/" location="io/blitz/curl/images/"/>
+    <resource type="download" name="templates/" location="io/blitz/curl/templates/"/>
+    
+    <!-- defines the link (tab) to the curl result page on job results-->
+    <web-item key="blitz-curl:${buildKey}-${buildNumber}" 
+            name="blitz-curl" section="results.subMenu/results" weight="70">
+        <description>Link to the blitz tab in the job results page</description>
+        <label key="Blitz"/>
+        <link linkId="blitz-curl:${buildKey}-${buildNumber}">
+            /build/result/viewCurlResult.action?buildKey=${buildKey}&amp;buildNumber=${buildNumber}
+        </link>
+        <condition class="io.blitz.bamboo.CurlResultWebItemCondition"/>
+    </web-item>
+</atlassian-plugin>
