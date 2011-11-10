@@ -102,5 +102,4 @@ public class RushListener extends CurlListener implements IRushListener{
             throw new RuntimeException("Too many errors.");
         }
     }
-    
 }
